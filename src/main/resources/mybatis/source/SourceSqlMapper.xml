@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liangtaona.project.source.sql.mapper.SourceSqlMapper">
+    
+    <resultMap type="SourceSql" id="SourceSqlResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="executeTatement"    column="execute_tatement"    />
+        <result property="rows"    column="rows"    />
+        <result property="creationTime"    column="creation_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="state"    column="state"    />
+        <result property="errorDescription"    column="error_description"    />
+    </resultMap>
+
+    <sql id="selectSourceSqlVo">
+        select id, user_id, execute_tatement, rows, creation_time, update_time, state, error_description from source_sql
+    </sql>
+
+    <select id="selectSourceSqlList" parameterType="SourceSql" resultMap="SourceSqlResult">
+        <include refid="selectSourceSqlVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="executeTatement != null  and executeTatement != ''"> and execute_tatement = #{executeTatement}</if>
+            <if test="rows != null "> and rows = #{rows}</if>
+            <if test="creationTime != null "> and creation_time = #{creationTime}</if>
+            <if test="state != null  and state != ''"> and state = #{state}</if>
+            <if test="errorDescription != null  and errorDescription != ''"> and error_description = #{errorDescription}</if>
+        </where>
+    </select>
+    
+    <select id="selectSourceSqlById" parameterType="Long" resultMap="SourceSqlResult">
+        <include refid="selectSourceSqlVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSourceSql" parameterType="SourceSql" useGeneratedKeys="true" keyProperty="id">
+        insert into source_sql
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null ">user_id,</if>
+            <if test="executeTatement != null  and executeTatement != ''">execute_tatement,</if>
+            <if test="rows != null ">rows,</if>
+            <if test="creationTime != null ">creation_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="state != null  and state != ''">state,</if>
+            <if test="errorDescription != null  and errorDescription != ''">error_description,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null ">#{userId},</if>
+            <if test="executeTatement != null  and executeTatement != ''">#{executeTatement},</if>
+            <if test="rows != null ">#{rows},</if>
+            <if test="creationTime != null ">#{creationTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="state != null  and state != ''">#{state},</if>
+            <if test="errorDescription != null  and errorDescription != ''">#{errorDescription},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSourceSql" parameterType="SourceSql">
+        update source_sql
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="executeTatement != null  and executeTatement != ''">execute_tatement = #{executeTatement},</if>
+            <if test="rows != null ">rows = #{rows},</if>
+            <if test="creationTime != null ">creation_time = #{creationTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="state != null  and state != ''">state = #{state},</if>
+            <if test="errorDescription != null  and errorDescription != ''">error_description = #{errorDescription},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSourceSqlById" parameterType="Long">
+        delete from source_sql where id = #{id}
+    </delete>
+
+    <delete id="deleteSourceSqlByIds" parameterType="String">
+        delete from source_sql where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

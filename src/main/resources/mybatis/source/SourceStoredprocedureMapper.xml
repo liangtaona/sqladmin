@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liangtaona.project.source.storedProcedure.mapper.SourceStoredprocedureMapper">
+    
+    <resultMap type="SourceStoredprocedure" id="SourceStoredprocedureResult">
+        <result property="id"    column="id"    />
+        <result property="factoryCode"    column="factory_code"    />
+        <result property="factoryName"    column="factory_name"    />
+        <result property="groupCode"    column="group_code"    />
+        <result property="groupName"    column="group_name"    />
+        <result property="userId"    column="user_id"    />
+        <result property="creationTime"    column="creation_time"    />
+        <result property="updateId"    column="update_id"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectSourceStoredprocedureVo">
+        select id, factory_code, factory_name, group_code, group_name, user_id, creation_time, update_id, update_time from source_storedProcedure
+    </sql>
+
+    <select id="selectSourceStoredprocedureList" parameterType="SourceStoredprocedure" resultMap="SourceStoredprocedureResult">
+        <include refid="selectSourceStoredprocedureVo"/>
+        <where>  
+            <if test="factoryCode != null  and factoryCode != ''"> and factory_code = #{factoryCode}</if>
+            <if test="factoryName != null  and factoryName != ''"> and factory_name like concat('%', #{factoryName}, '%')</if>
+            <if test="groupCode != null  and groupCode != ''"> and group_code = #{groupCode}</if>
+            <if test="groupName != null  and groupName != ''"> and group_name like concat('%', #{groupName}, '%')</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="creationTime != null "> and creation_time = #{creationTime}</if>
+            <if test="updateId != null "> and update_id = #{updateId}</if>
+        </where>
+    </select>
+    
+    <select id="selectSourceStoredprocedureById" parameterType="Long" resultMap="SourceStoredprocedureResult">
+        <include refid="selectSourceStoredprocedureVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSourceStoredprocedure" parameterType="SourceStoredprocedure" useGeneratedKeys="true" keyProperty="id">
+        insert into source_storedProcedure
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="factoryCode != null  and factoryCode != ''">factory_code,</if>
+            <if test="factoryName != null  and factoryName != ''">factory_name,</if>
+            <if test="groupCode != null  and groupCode != ''">group_code,</if>
+            <if test="groupName != null  and groupName != ''">group_name,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="creationTime != null ">creation_time,</if>
+            <if test="updateId != null ">update_id,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="factoryCode != null  and factoryCode != ''">#{factoryCode},</if>
+            <if test="factoryName != null  and factoryName != ''">#{factoryName},</if>
+            <if test="groupCode != null  and groupCode != ''">#{groupCode},</if>
+            <if test="groupName != null  and groupName != ''">#{groupName},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="creationTime != null ">#{creationTime},</if>
+            <if test="updateId != null ">#{updateId},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSourceStoredprocedure" parameterType="SourceStoredprocedure">
+        update source_storedProcedure
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="factoryCode != null  and factoryCode != ''">factory_code = #{factoryCode},</if>
+            <if test="factoryName != null  and factoryName != ''">factory_name = #{factoryName},</if>
+            <if test="groupCode != null  and groupCode != ''">group_code = #{groupCode},</if>
+            <if test="groupName != null  and groupName != ''">group_name = #{groupName},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="creationTime != null ">creation_time = #{creationTime},</if>
+            <if test="updateId != null ">update_id = #{updateId},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSourceStoredprocedureById" parameterType="Long">
+        delete from source_storedProcedure where id = #{id}
+    </delete>
+
+    <delete id="deleteSourceStoredprocedureByIds" parameterType="String">
+        delete from source_storedProcedure where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

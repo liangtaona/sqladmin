@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.liangtaona.project.source.program.mapper.SourceProgramMapper">
+    
+    <resultMap type="SourceProgram" id="SourceProgramResult">
+        <result property="id"    column="id"    />
+        <result property="moduleCode"    column="module_code"    />
+        <result property="moduleName"    column="module_name"    />
+        <result property="programCode"    column="program_code"    />
+        <result property="programName"    column="program_name"    />
+        <result property="executionO"    column="execution_o"    />
+        <result property="userId"    column="user_id"    />
+        <result property="creationTime"    column="creation_time"    />
+        <result property="updateId"    column="update_id"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateOrNot"    column="update_or_not"    />
+        <result property="sql"    column="sql"    />
+    </resultMap>
+
+    <sql id="selectSourceProgramVo">
+        select id, module_code, module_name, program_code, program_name, execution_o, user_id, creation_time, update_id, update_time, update_or_not, sql from source_program
+    </sql>
+
+    <select id="selectSourceProgramList" parameterType="SourceProgram" resultMap="SourceProgramResult">
+        <include refid="selectSourceProgramVo"/>
+        <where>  
+            <if test="moduleCode != null  and moduleCode != ''"> and module_code = #{moduleCode}</if>
+            <if test="moduleName != null  and moduleName != ''"> and module_name like concat('%', #{moduleName}, '%')</if>
+            <if test="programCode != null  and programCode != ''"> and program_code = #{programCode}</if>
+            <if test="programName != null  and programName != ''"> and program_name like concat('%', #{programName}, '%')</if>
+            <if test="executionO != null  and executionO != ''"> and execution_o = #{executionO}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="creationTime != null "> and creation_time = #{creationTime}</if>
+            <if test="updateId != null "> and update_id = #{updateId}</if>
+            <if test="updateOrNot != null  and updateOrNot != ''"> and update_or_not = #{updateOrNot}</if>
+            <if test="sql != null  and sql != ''"> and sql = #{sql}</if>
+        </where>
+    </select>
+    
+    <select id="selectSourceProgramById" parameterType="Long" resultMap="SourceProgramResult">
+        <include refid="selectSourceProgramVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertSourceProgram" parameterType="SourceProgram" useGeneratedKeys="true" keyProperty="id">
+        insert into source_program
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="moduleCode != null  and moduleCode != ''">module_code,</if>
+            <if test="moduleName != null  and moduleName != ''">module_name,</if>
+            <if test="programCode != null  and programCode != ''">program_code,</if>
+            <if test="programName != null  and programName != ''">program_name,</if>
+            <if test="executionO != null  and executionO != ''">execution_o,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="creationTime != null ">creation_time,</if>
+            <if test="updateId != null ">update_id,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="updateOrNot != null  and updateOrNot != ''">update_or_not,</if>
+            <if test="sql != null  and sql != ''">sql,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="moduleCode != null  and moduleCode != ''">#{moduleCode},</if>
+            <if test="moduleName != null  and moduleName != ''">#{moduleName},</if>
+            <if test="programCode != null  and programCode != ''">#{programCode},</if>
+            <if test="programName != null  and programName != ''">#{programName},</if>
+            <if test="executionO != null  and executionO != ''">#{executionO},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="creationTime != null ">#{creationTime},</if>
+            <if test="updateId != null ">#{updateId},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="updateOrNot != null  and updateOrNot != ''">#{updateOrNot},</if>
+            <if test="sql != null  and sql != ''">#{sql},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSourceProgram" parameterType="SourceProgram">
+        update source_program
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="moduleCode != null  and moduleCode != ''">module_code = #{moduleCode},</if>
+            <if test="moduleName != null  and moduleName != ''">module_name = #{moduleName},</if>
+            <if test="programCode != null  and programCode != ''">program_code = #{programCode},</if>
+            <if test="programName != null  and programName != ''">program_name = #{programName},</if>
+            <if test="executionO != null  and executionO != ''">execution_o = #{executionO},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="creationTime != null ">creation_time = #{creationTime},</if>
+            <if test="updateId != null ">update_id = #{updateId},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateOrNot != null  and updateOrNot != ''">update_or_not = #{updateOrNot},</if>
+            <if test="sql != null  and sql != ''">sql = #{sql},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSourceProgramById" parameterType="Long">
+        delete from source_program where id = #{id}
+    </delete>
+
+    <delete id="deleteSourceProgramByIds" parameterType="String">
+        delete from source_program where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>
